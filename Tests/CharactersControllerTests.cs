@@ -13,7 +13,7 @@ namespace RickAndMortyRestApi.Tests
         public CharactersControllerTests()
         {
             _mockGraphQLClient = new Mock<IRickAndMortyGraphQLClient>();
-            _controller = new CharactersController(_mockGraphQLClient.Object);
+            _controller = new CharactersController(_mockGraphQLClient.Object,null);
         }
 
         [Fact]

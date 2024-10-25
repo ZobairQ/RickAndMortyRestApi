@@ -8,10 +8,12 @@ namespace RickAndMorty
     public class CharactersController : ControllerBase
     {
         private readonly IRickAndMortyGraphQLClient _graphqlClient;
+        private readonly ILogger<CharactersController> _logger;
 
-        public CharactersController(IRickAndMortyGraphQLClient graphqlClient)
+        public CharactersController(IRickAndMortyGraphQLClient graphqlClient, ILogger<CharactersController> logger)
         {
-            _graphqlClient = graphqlClient;
+            this._graphqlClient = graphqlClient;
+            this._logger = logger;
         }
 
         /// <summary>
@@ -23,8 +25,18 @@ namespace RickAndMorty
         [ProducesResponseType(typeof(List<Character>), 200)]
         public async Task<IActionResult> GetCharacters([FromQuery] int page = 1)
         {
-            var characters = await _graphqlClient.GetCharactersAsync(page);
-            return Ok(characters);
+            this._logger.LogInformation("Received request for character list on page: {Page}", page);
+            try
+            {
+                var characters = await _graphqlClient.GetCharactersAsync(page);
+                return Ok(characters);
+            }
+            catch (System.Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching characters for page: {Page}", page);
+                return StatusCode(500, "Internal server error");
+            }
+
         }
     }
 

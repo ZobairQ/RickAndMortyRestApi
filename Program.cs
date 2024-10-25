@@ -2,6 +2,10 @@ using Microsoft.OpenApi.Models;
 using RickAndMorty;
 var builder = WebApplication.CreateBuilder(args);
 
+// Configure logging
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+
 builder.Services.AddSingleton<IRickAndMortyGraphQLClient, RickAndMortyGraphQLClient>();
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options => options.UseMemberCasing());
@@ -17,10 +21,8 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-
 var app = builder.Build();
 app.MapControllers();
-app.Logger.Log(LogLevel.Trace, "H");
 app.UseSwagger(options =>
 {
     options.SerializeAsV2 = true;

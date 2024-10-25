@@ -17,14 +17,17 @@ namespace RickAndMorty
     public class RickAndMortyGraphQLClient : IRickAndMortyGraphQLClient
     {
         private readonly GraphQLHttpClient _client;
+        private readonly ILogger<RickAndMortyGraphQLClient> _logger;
 
-        public RickAndMortyGraphQLClient()
+        public RickAndMortyGraphQLClient(ILogger<RickAndMortyGraphQLClient> logger)
         {
             _client = new GraphQLHttpClient("https://rickandmortyapi.com/graphql", new NewtonsoftJsonSerializer());
+            this._logger = logger;
         }
 
         public async Task<List<Character>> GetCharactersAsync(int page)
         {
+            _logger.LogInformation("Fetching characters for page: {Page} from GraphQL API", page);
             var request = new GraphQLRequest
             {
                 Query = """
@@ -48,8 +51,19 @@ namespace RickAndMorty
                 """,
                 Variables = new { page }
             };
-            var response = await _client.SendQueryAsync<CharactersResponse>(request);
-            return response.Data.Characters.Results;
+            try
+            {
+                var response = await _client.SendQueryAsync<CharactersResponse>(request);
+                this._logger.LogInformation("Successfully fetched {Count} characters for page: {Page} from GraphQL API",
+                                   response.Data.Characters.Results.Count, page);
+                return response.Data.Characters.Results;
+            }
+            catch (System.Exception ex)
+            {
+                this._logger.LogError(ex, "Error occurred while fetching characters for page: {Page} from GraphQL API", page);
+                throw;
+            }
+
 
         }
     }
