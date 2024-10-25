@@ -16,11 +16,11 @@ jobs:
     steps:
     # Check out the repository code
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     # Set up .NET SDK
     - name: Setup .NET SDK
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '8.x' # Use .NET 8, or specify the version your project requires
 
