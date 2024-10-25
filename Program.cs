@@ -2,14 +2,10 @@ using Microsoft.OpenApi.Models;
 using RickAndMorty;
 var builder = WebApplication.CreateBuilder(args);
 
-// Register GraphQL Client
-
-// Add services to the container.
 builder.Services.AddSingleton<IRickAndMortyGraphQLClient, RickAndMortyGraphQLClient>();
 builder.Services.AddControllers()
-    .AddNewtonsoftJson(options => options.UseMemberCasing()); // Use Newtonsoft.Json for serialization
+    .AddNewtonsoftJson(options => options.UseMemberCasing());
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -24,8 +20,7 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 app.MapControllers();
-app.Logger.Log(LogLevel.Trace,"H");
-// Configure the HTTP request pipeline.
+app.Logger.Log(LogLevel.Trace, "H");
 app.UseSwagger(options =>
 {
     options.SerializeAsV2 = true;
