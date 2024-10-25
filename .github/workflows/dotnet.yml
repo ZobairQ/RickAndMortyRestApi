@@ -1,0 +1,37 @@
+name: .NET Core CI
+
+on:
+  push:
+    branches:
+      - master
+      - 'feature/**' # Only run tests on master branch and any branches with feature/ prefix
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Check out the repository code
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # Set up .NET SDK
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.x' # Use .NET 8, or specify the version your project requires
+
+    # Restore dependencies
+    - name: Restore dependencies
+      run: dotnet restore
+
+    # Build the project
+    - name: Build project
+      run: dotnet build --no-restore
+
+    # Run tests
+    - name: Run tests
+      run: dotnet test --no-build --verbosity normal
