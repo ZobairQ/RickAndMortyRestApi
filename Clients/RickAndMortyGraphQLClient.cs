@@ -37,6 +37,7 @@ namespace RickAndMorty
                         id
                         name
                         status
+                        image
                         species
                         gender
                         origin {

@@ -5,6 +5,7 @@ namespace RickAndMorty
         public int Id { get; set; }
         public required string Name { get; set; }
         public required string Status { get; set; }
+        public required string image { get; set; }
         public required string Species { get; set; }
         public required string Gender { get; set; }
         public required Origin Origin { get; set; }
