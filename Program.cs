@@ -1,7 +1,7 @@
 using Microsoft.OpenApi.Models;
 using RickAndMorty;
 var builder = WebApplication.CreateBuilder(args);
-
+var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 // Configure logging
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
@@ -20,7 +20,14 @@ builder.Services.AddSwaggerGen(options =>
         Description = "An ASP.NET Core Web API Wrapper for Rick and Morty Graphql API",
     });
 });
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy  =>
+                      {
+                          policy.WithOrigins("http://localhost:3000");
+                      });
+});
 var app = builder.Build();
 app.MapControllers();
 app.UseSwagger(options =>
@@ -35,6 +42,7 @@ if (builder.Environment.IsDevelopment())
         options.RoutePrefix = string.Empty;
     });
 }
+app.UseCors(MyAllowSpecificOrigins);
 app.UseHttpsRedirection();
 
 app.Run();
