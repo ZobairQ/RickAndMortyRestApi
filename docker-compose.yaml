@@ -1,0 +1,20 @@
+
+services:
+  rick-and-morty-api-dev:
+    container_name: rickAndMortyApi
+    build:
+      context: .
+      dockerfile: .docker/RickAndMortyApi.dockerfile
+    ports:
+      - 5001:8080
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+
+  # This is commented out since I dont want to spin up 2 containers.. However it is just to show how a prod container would look like.
+  # rick-and-morty-api-prod:
+  #   container_name: rickAndMortyApi_prod
+  #   build:
+  #     context: .
+  #     dockerfile: .docker/Dockerfile
+  #   ports:
+  #     - 80: 8080
