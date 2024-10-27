@@ -1,6 +1,8 @@
 
 services:
   rick-and-morty-api-dev:
+    networks:
+      - rick_and_morty
     container_name: rickAndMortyApi
     build:
       context: .
@@ -18,3 +20,8 @@ services:
   #     dockerfile: .docker/Dockerfile
   #   ports:
   #     - 80: 8080
+
+networks:
+    rick_and_morty:
+        name: rick_and_morty
+        external: true
